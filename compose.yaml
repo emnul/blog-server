@@ -11,19 +11,41 @@ services:
   reverse-proxy:
     image: traefik:v3.1
     # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker
+    command:
+      # LetsEncrypt configs
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=esolis6114@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      # Redirect HTTP (80) requests to HTTPS (443)
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
     ports:
       # The HTTP port
       - "80:80"
-      # The Web UI (enabled by --api.insecure=true)
-      - "8080:8080"
+      # when using the TLS-ALPN-01 challenge, Traefik must be reachable by Let's Encrypt through port 443.
+      - "443:443"
     volumes:
+      - letsencrypt:/letsencrypt
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
   blog-server:
     image: ghcr.io/emnul/blog-server:prod
     labels:
+      - "traefik.enable=true"
       - "traefik.http.routers.blog-server.rule=Host('emnul.dev')"
+      - "traefik.http.routers.guestbook.entrypoints=websecure"
+      - "traefik.http.routers.guestbook.tls.certresolver=myresolver"
+    # Run 3 instances of blog-server for improved reliability through increased availability
+    # Improves UX in case one of the instances panics
+    deploy:
+      mode: replicated
+      replicas: 3
+volumes:
+  letsencrypt:
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
 # start the database before your application. The `db-data` volume persists the
