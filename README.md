@@ -1,5 +1,5 @@
 # Server Side Stack
-[Axum](https://docs.rs/axum/latest/axum/) - web server library
+[Axum](https://docs.rs/axum/latest/axum/) - web framework
 
 [Askama](https://djc.github.io/askama/askama.html) - templating engine
 
