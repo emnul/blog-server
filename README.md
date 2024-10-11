@@ -14,5 +14,7 @@
 
 [UptimeRobot](https://uptimerobot.com/) - basic monitoring
 
+[UFW](https://help.ubuntu.com/community/UFW) - network traffic management
+
 # Frontend Stack
 [HTMX](https://htmx.org/) 
