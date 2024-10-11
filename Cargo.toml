@@ -1,0 +1,15 @@
+[package]
+name = "personal-blog"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+askama = { version = "0.12.1", features = ["with-axum"] }
+askama_axum = "0.4.0"
+axum = "0.7.7"
+fs = "0.0.5"
+tokio = { version = "1.40.0", features = ["full"] }
+tower = "0.5.1"
+tower-http = { version = "0.6.1", features = ["trace", "fs"] }
+tracing = "0.1.40"
+tracing-subscriber = {version = "0.3.18", features = ["env-filter"]}
