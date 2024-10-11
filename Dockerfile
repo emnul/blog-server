@@ -19,6 +19,9 @@ WORKDIR /app
 # Install host build dependencies.
 RUN apk add --no-cache clang lld musl-dev git
 
+# Declare build-time arg
+ARG APP_NAME
+
 # Build the application.
 # Leverage a cache mount to /usr/local/cargo/registry/
 # for downloaded dependencies, a cache mount to /usr/local/cargo/git/db
@@ -31,9 +34,11 @@ RUN --mount=type=bind,source=src,target=src \
     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
     --mount=type=bind,source=templates,target=templates \
-cargo build --locked --release 
-
-RUN cp ./target/release/$APP_NAME /bin/server
+    --mount=type=cache,target=/app/target/ \
+    --mount=type=cache,target=/usr/local/cargo/git/db \
+    --mount=type=cache,target=/usr/local/cargo/registry/ \
+cargo build --locked --release && \
+cp ./target/release/$APP_NAME /bin/server
 
 ################################################################################
 # Create a new stage for running the application that contains the minimal
