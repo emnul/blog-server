@@ -31,8 +31,9 @@ RUN --mount=type=bind,source=src,target=src \
     --mount=type=bind,source=Cargo.toml,target=Cargo.toml \
     --mount=type=bind,source=Cargo.lock,target=Cargo.lock \
     --mount=type=bind,source=templates,target=templates \
-cargo build --locked --release && \
-cp ./target/release/$APP_NAME /bin/server
+cargo build --locked --release 
+
+RUN cp ./target/release/$APP_NAME /bin/server
 
 ################################################################################
 # Create a new stage for running the application that contains the minimal
