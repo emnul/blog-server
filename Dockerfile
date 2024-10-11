@@ -13,8 +13,10 @@ ARG APP_NAME=blog-server
 # Create a stage for building the application.
 
 FROM rust:${RUST_VERSION}-alpine AS build
-ARG APP_NAME
+LABEL org.opencontainers.image.source=https://github.com/emnul/blog-server
 WORKDIR /app
+
+COPY ./templates ./templates
 
 # Install host build dependencies.
 RUN apk add --no-cache clang lld musl-dev git
@@ -48,6 +50,16 @@ cp ./target/release/$APP_NAME /bin/server
 # (e.g., alpine@sha256:664888ac9cfd28068e062c991ebcff4b4c7307dc8dd4df9e728bedde5c449d91).
 FROM alpine:3.18 AS final
 
+LABEL org.opencontainers.image.source=https://github.com/emnul/blog-server
+# Install any runtime dependencies that are needed to run your application.
+# Leverage a cache mount to /var/cache/apk/ to speed up subsequent builds.
+RUN --mount=type=cache,target=/var/cache/apk \
+    apk --update add \
+        ca-certificates \
+        tzdata \
+        && \
+        update-ca-certificates
+
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
 ARG UID=10001
@@ -63,6 +75,8 @@ USER appuser
 
 # Copy the executable from the "build" stage.
 COPY --from=build /bin/server /bin/
+COPY ./static ./static
+
 
 # Expose the port that the application listens on.
 EXPOSE 8080
