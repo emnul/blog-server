@@ -54,6 +54,7 @@ services:
     deploy:
       mode: replicated
       replicas: 3
+    restart: always
 volumes:
   letsencrypt:
 # The commented out section below is an example of how to define a PostgreSQL
