@@ -45,8 +45,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.blog-server.rule=Host('emnul.dev')"
-      - "traefik.http.routers.guestbook.entrypoints=websecure"
-      - "traefik.http.routers.guestbook.tls.certresolver=myresolver"
+      - "traefik.http.routers.blog-server.entrypoints=websecure"
+      - "traefik.http.routers.blog-server.tls.certresolver=myresolver"
       # enable watchtower to monitor blog-server
       - "com.centurylinklabs.watchtower.enable=true"
     # Run 3 instances of blog-server for improved reliability through increased availability
