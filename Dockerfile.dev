@@ -79,11 +79,11 @@ USER appuser
 COPY --from=build /bin/server /bin/
 COPY ./static ./static
 
-# Enable tower_http tracing logs
-ENV RUST_LOG=tower_http=trace
 
 # Expose the port that the application listens on.
 EXPOSE 8080
+
+ENV RUST_LOG=tower_http=trace
 
 # What the container should run when it is started.
 CMD ["/bin/server"]

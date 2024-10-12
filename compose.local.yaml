@@ -1,0 +1,38 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker Compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+  reverse-proxy:
+    image: traefik:v3.1
+    # Enables the web UI and tells Traefik to listen to docker
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker.exposedbydefault=false"
+
+      - "--entrypoints.web.address=:80"
+      - "--log.level=INFO"
+        #- --log.filepath=/var/log/traefik.log
+      - "--accesslog=true"
+
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+  blog-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev # explicitly specify Dockerfile for production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.blog-server.rule=Host(`localhost`)"
+      - "traefik.http.services.blog-server.loadbalancer.server.port=8080"
