@@ -8,6 +8,14 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
+  watchtower:
+    image: containrrr/watchtower
+    command:
+      - "--label-enable"
+      - "--interval"
+      - "30"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   reverse-proxy:
     image: traefik:v3.1
     # Enables the web UI and tells Traefik to listen to docker
@@ -39,6 +47,8 @@ services:
       - "traefik.http.routers.blog-server.rule=Host('emnul.dev')"
       - "traefik.http.routers.guestbook.entrypoints=websecure"
       - "traefik.http.routers.guestbook.tls.certresolver=myresolver"
+      # enable watchtower to monitor blog-server
+      - "com.centurylinklabs.watchtower.enable=true"
     # Run 3 instances of blog-server for improved reliability through increased availability
     # Improves UX in case one of the instances panics
     deploy:
