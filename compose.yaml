@@ -44,7 +44,7 @@ services:
     image: ghcr.io/emnul/blog-server:prod
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.blog-server.rule=Host('emnul.dev')"
+      - "traefik.http.routers.blog-server.rule=Host(`emnul.dev`)"
       - "traefik.http.routers.blog-server.entrypoints=websecure"
       - "traefik.http.routers.blog-server.tls.certresolver=myresolver"
       # enable watchtower to monitor blog-server
