@@ -12,11 +12,12 @@ services:
     image: traefik:v3.1
     # Enables the web UI and tells Traefik to listen to docker
     command:
+      - "--providers.docker=true"
+      - "--log.level=DEBUG"
       - "--api.insecure=true"
       - "--providers.docker.exposedbydefault=false"
 
       - "--entrypoints.web.address=:80"
-      - "--log.level=INFO"
         #- --log.filepath=/var/log/traefik.log
       - "--accesslog=true"
 
@@ -31,8 +32,8 @@ services:
   blog-server:
     build:
       context: .
-      dockerfile: Dockerfile.dev # explicitly specify Dockerfile for production
+      dockerfile: Dockerfile.dev # explicitly specify Dockerfile for development
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.blog-server.rule=Host(`localhost`)"
-      - "traefik.http.services.blog-server.loadbalancer.server.port=8080"
+      - "traefik.http.routers.blog-server.entrypoints=web"
