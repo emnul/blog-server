@@ -1,3 +1,6 @@
+# Development Setup
+Run `docker compose -f compose.local.yaml up --watch`
+
 # Server Side Stack
 [Axum](https://docs.rs/axum/latest/axum/) - web framework
 

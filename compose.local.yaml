@@ -33,6 +33,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev # explicitly specify Dockerfile for development
+    develop:
+      watch:
+        - action: rebuild
+          path: ./templates
+        - action: rebuild
+          path: ./src
+        - action: rebuild
+          path: Cargo.toml
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.blog-server.rule=Host(`localhost`)"
