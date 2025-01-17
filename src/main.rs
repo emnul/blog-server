@@ -23,7 +23,8 @@ async fn main() {
         // `GET /` goes to `root`
         .route("/", get(root))
         .layer(TraceLayer::new_for_http())
-        .nest_service("/static", ServeDir::new("static"));
+        .nest_service("/assets", ServeDir::new("./ui/assets"))
+        .nest_service("/app", ServeDir::new("./ui/dist"));
 
     // run our app with hyper, listening globally on port 8080
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();

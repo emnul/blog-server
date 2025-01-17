@@ -1,0 +1,22 @@
+{
+	"name": "blog-server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app/index.js",
+	"scripts": {
+		"build:dev": "esbuild app/index.js --bundle --outfile=dist/bundle.js --sourcemap --watch",
+		"build:prod": "esbuild app/index.js --bundle --outfile=dist/bundle.js --minify"
+	},
+	"keywords": [],
+	"author": "Emanuel Solis",
+	"license": "ISC",
+	"dependencies": {
+		"htmx.org": "^2.0.4",
+		"p5": "^1.11.2",
+		"p5.plotsvg": "^0.1.2"
+	},
+	"devDependencies": {
+		"@types/p5": "^1.7.6",
+		"esbuild": "0.24.2"
+	}
+}
