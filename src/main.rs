@@ -23,7 +23,7 @@ async fn main() {
         // `GET /` goes to `root`
         .route("/", get(root))
         .layer(TraceLayer::new_for_http())
-        .nest_service("/assets", ServeDir::new("./ui/assets"))
+        .nest_service("/styles", ServeDir::new("./ui/styles"))
         .nest_service("/app", ServeDir::new("./ui/dist"));
 
     // run our app with hyper, listening globally on port 8080

@@ -72,7 +72,8 @@ USER appuser
 
 # Copy the executable from the "build" stage.
 COPY --from=build /bin/server /bin/
-COPY ./ui/dist ./ui/assets /ui/
+COPY ./ui/dist /ui/dist/
+COPY ./ui/assets/styles /ui/styles/
 
 # Enable tower_http tracing logs
 ENV RUST_LOG=tower_http=trace
