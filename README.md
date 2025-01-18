@@ -1,11 +1,8 @@
 # Development Setup
 
-## Local
 Run `pnpm run build:dev` in ui dir to get esbuild to live-reload on changes to js files
-Run `cargo run` in root dir to start file server
 
-## Docker
-Run `docker compose -f compose.local.yaml up --watch`
+Run `docker compose -f compose.local.yaml up --watch` to start development container. A volume pointing to the ui dir is mounted in the container for live updates
 
 # Server Side Stack
 [Axum](https://docs.rs/axum/latest/axum/) - web framework

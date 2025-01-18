@@ -2,6 +2,7 @@
 name = "blog-server"
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.84"
 
 [dependencies]
 askama = { version = "0.12.1", features = ["with-axum"] }
